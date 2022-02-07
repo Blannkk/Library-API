@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 Schema = mongoose.Schema,
 autoIncrement = require('mongoose-auto-increment');
 
-const connection = mongoose.createConnection(process.env.DB);
+const connection = mongoose.createConnection(process.env.MONGO_URI);
 
 autoIncrement.initialize(connection);
 
@@ -18,7 +18,7 @@ const authorSchema = new mongoose.Schema({
     }
 });
 
-authorSchema.plugin(autoIncrement.plugin, authorModelName);
+authorSchema.plugin(autoIncrement.plugin,  {model: 'Author', field: 'id',startAt: 1, incremrntBy: 1});
 const Author = mongoose.model(authorModelName, authorSchema);
 
 

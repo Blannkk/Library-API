@@ -1,12 +1,16 @@
 const express = require('express');
 const app = express();
 
-const bookRoutes = require('./api/routes/books');
-const userRoutes = require('./api/routes/users');
-const authorRoutes = require('./api/routes/authors')
+require('./api/db/connect');
+require('./api/start/routes')(app);
+require('./api/start/logging');
+require('./api/start/prod')(app)
 
-app.use('/authors',authorRoutes)
-app.use('/books',bookRoutes);
-app.use('/users', userRoutes);
 
-module.exports = app;
+
+const port = process.env.PORT || 8080;
+
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
+
+

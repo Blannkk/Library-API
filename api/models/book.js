@@ -1,11 +1,12 @@
 require('dotenv').config()
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const { Author} = require('./author')
 const { authorModelName } = require('./author');
    Schema = mongoose.Schema,
     autoIncrement = require('mongoose-auto-increment');
 
-const connection = mongoose.createConnection(process.env.DB);
+const connection = mongoose.createConnection(process.env.MONGO_URI);
 
 autoIncrement.initialize(connection);
 
@@ -33,12 +34,12 @@ const bookSchema = new Schema({
         maxlength:15,
     },
     author:{
-        ref: 'authors',
-        type : Number
+        type : Number,
+        ref: 'author'
     }
 });
 
-bookSchema.plugin(autoIncrement.plugin, 'Book');
+bookSchema.plugin(autoIncrement.plugin,  {model: 'Book', field: 'id',startAt: 1, incremrntBy: 1});
 const Book = connection.model('Book', bookSchema);
 
 
